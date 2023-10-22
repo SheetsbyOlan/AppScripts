@@ -1,0 +1,15 @@
+function onEdit(e) {
+  var range = e.range;
+  var column = range.getColumn();
+  Logger.log('edited');
+  if (column == 3){
+    var timestamp = new Date();
+    var row = range.getRow();
+    var value = e.value;
+    var sheet = e.source.getActiveSheet();
+    Logger.log("edited cell: "+range.getA1Notation());
+    if( value == "Done"){
+      sheet.getRange(row, 8).setValue(timestamp);
+    }
+  }
+}
