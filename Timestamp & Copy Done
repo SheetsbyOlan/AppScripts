@@ -1,0 +1,36 @@
+function onEdit(e) {
+  addatimestamp(e);
+  movedone(e)
+}
+function addatimestamp(e) {
+  var range = e.range;
+  var column = range.getColumn();
+  Logger.log('edited');
+  if (column == 3){
+    var timestamp = new Date();
+    var row = range.getRow();
+    var value = e.value;
+    var sheet = e.source.getActiveSheet();
+    Logger.log("edited cell: "+range.getA1Notation());
+    if( value == "Done"){
+      sheet.getRange(row, 10).setValue(timestamp);
+    }if( value == "Pending"){
+      sheet.getRange(row, 9).setValue(timestamp);
+    }
+    if( value == "Not Started"){
+      sheet.getRange(row, 8).setValue(timestamp);
+    }
+  }
+}
+
+function movedone(e){
+  let r = e.range;
+  if (r.columnStart != 3 || r.rowStart == 1 || e.value == null) return;
+  const sh = SpreadsheetApp.getActive();
+  const valArray = ["Done"];
+  const destArray = ["Done"];
+  let dest = sh.getSheetByName(destArray[valArray.indexOf(e.value)]);
+  let src = sh.getActiveSheet();
+  if (dest.getName() == src.getName()) return;
+  src.getRange(r.rowStart,2,1,10).copyTo(dest.getRange(dest.getLastRow()+1,2,1,10));
+}
