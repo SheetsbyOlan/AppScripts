@@ -1,0 +1,84 @@
+function onEdit(e) {
+  addatimestamp(e);
+  movedone(e)
+}
+
+function addatimestamp(e) {
+  var range = e.range;
+  var column = range.getColumn();
+  Logger.log('edited');
+  if (column == 4){
+    var timestamp = new Date();
+    var row = range.getRow();
+    var value = e.value;
+    var sheet = e.source.getActiveSheet();
+    Logger.log("edited cell: "+range.getA1Notation());
+    if( value == "Done"){
+      sheet.getRange(row, 12).setValue(timestamp);
+    }if( value == "Pending"){
+      sheet.getRange(row, 11).setValue(timestamp);
+    }
+  }
+  if (column == 3){
+    var timestamp = new Date();
+    var row = range.getRow();
+    var value = e.value;
+    var sheet = e.source.getActiveSheet();
+    Logger.log("edited cell: "+range.getA1Notation());
+    if( value !== ""){
+      sheet.getRange(row, 10).setValue(timestamp);
+    }
+  }
+}
+
+
+function movedone(e) {
+  var sheet = e.source.getActiveSheet();
+  var range = e.range;
+  var row = range.getRow();
+  var col = range.getColumn();
+  
+  if (range.getColumn() == 4 && e.value == "Done") { 
+      var recurringValue = sheet.getRange(row, 5).getValue();
+      if (recurringValue !== "Recurring"){
+      var targetSheet = e.source.getSheetByName("Done"); 
+      var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1); 
+    
+      sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+    
+      sheet.deleteRow(range.getRow());
+      }
+  }
+  if (range.getColumn() == 4 && e.value == "Done") { 
+      var recurringValue = sheet.getRange(row, 5).getValue();
+      if (recurringValue == "Recurring"){
+      var targetSheet = e.source.getSheetByName("Done"); 
+      var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1); 
+    
+      sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+    
+      }
+  }
+    if (range.getColumn() == 4 && e.value == "Parked") { 
+      var recurringValue = sheet.getRange(row, 5).getValue();
+      if (recurringValue !== "Recurring"){
+      var targetSheet = e.source.getSheetByName("Parked Tasks"); 
+      var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1); 
+    
+      sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+    
+      sheet.deleteRow(range.getRow());
+      }
+    }
+    if (range.getColumn() == 4 && e.value == "Ready") { 
+      var recurringValue = sheet.getRange(row, 5).getValue();
+      if (recurringValue !== "Recurring"){
+      var targetSheet = e.source.getSheetByName("Task List"); 
+      var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1); 
+    
+      sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+    
+      sheet.deleteRow(range.getRow());
+      }
+    }
+  }
