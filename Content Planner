@@ -1,0 +1,29 @@
+function onEdit(e) {
+movedone(e)
+}
+
+
+function movedone(e) {
+var sheet = e.source.getActiveSheet();
+var range = e.range;
+var row = range.getRow();
+var col = range.getColumn();
+if (range.getColumn() == 4 && e.value == "Published/Accepted") {
+var targetSheet = e.source.getSheetByName("Past Content");
+var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1);
+sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+sheet.deleteRow(range.getRow());
+}
+if (range.getColumn() == 4 && e.value == "Pending") {
+var targetSheet = e.source.getSheetByName("Content Planner");
+var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1);
+sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+sheet.deleteRow(range.getRow());
+}
+if (range.getColumn() == 4 && e.value == "Idea") {
+var targetSheet = e.source.getSheetByName("Idea Bank");
+var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1);
+sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+sheet.deleteRow(range.getRow());
+}
+}
