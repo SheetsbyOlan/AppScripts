@@ -21,9 +21,9 @@ sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
 sheet.deleteRow(range.getRow());
 }
 if (range.getColumn() == 4 && e.value == "Idea") {
-var targetSheet = e.source.getSheetByName("Idea Bank");
-var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1);
-sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
-sheet.deleteRow(range.getRow());
+  var targetSheet = e.source.getSheetByName("Idea Bank");
+  var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1);
+  sheet.getRange(range.getRow(), 1, 1, 4).copyTo(targetRange);
+  sheet.deleteRow(range.getRow());
 }
 }
