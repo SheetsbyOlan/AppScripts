@@ -1,0 +1,23 @@
+function onEdit(e) {
+  var sheet = e.source.getActiveSheet();
+  var range = e.range;
+
+  if (range.columnStart == 6) {
+    var row = range.rowStart;
+    var value = range.getValue();
+
+    if (value == "Paid") {
+      var destSheet = e.source.getSheetByName("Past Bills");
+      var lastRow = destSheet.getLastRow() + 1;
+
+      // Get the entire row data
+      var rowData = sheet.getRange(row, 1, 1, sheet.getLastColumn()).getValues();
+
+      rowData[0][4] = new Date();
+
+      destSheet.getRange(lastRow, 1, 1, rowData[0].length).setValues(rowData);
+
+      sheet.deleteRow(row);
+    }
+  }
+}
