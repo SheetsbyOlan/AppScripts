@@ -1,0 +1,14 @@
+function copyToPendingBills() {
+  // Get the source and destination sheets
+  var sourceSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("To Add");
+  var destinationSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pending Bills");
+
+  // Get the last row with data in column A of the destination sheet
+  var lastRow = destinationSheet.getLastRow();
+
+  // Get the range to copy from the source sheet
+  var rangeToCopy = sourceSheet.getRange("A2:F").getValues();
+
+  // Copy the values to the next empty row in column A of the destination sheet
+  destinationSheet.getRange(lastRow + 1, 1, rangeToCopy.length, 6).setValues(rangeToCopy);
+}
