@@ -1,0 +1,22 @@
+function onEdit(e) {
+  var sheet = e.source.getActiveSheet();
+  var range = e.range;
+
+  if (range.columnStart == 9) {
+    var row = range.rowStart;
+    var value = range.getValue();
+
+    if (value == "Paid") {
+      var destSheet = e.source.getSheetByName("Past Invoices");
+      var lastRow = destSheet.getLastRow() + 1;
+
+      var rowData = sheet.getRange(row, 1, 1, sheet.getLastColumn()).getValues();
+
+      rowData[0][6] = new Date();
+
+      destSheet.getRange(lastRow, 1, 1, rowData[0].length).setValues(rowData);
+
+      sheet.deleteRow(row);
+    }
+  }
+}
