@@ -1,0 +1,10 @@
+function copyToPendingInvoices() {
+  var sourceSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("To Add");
+  var destinationSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pending Invoices");
+
+  var lastRow = destinationSheet.getLastRow();
+
+  var rangeToCopy = sourceSheet.getRange("A2:F").getValues();
+
+  destinationSheet.getRange(lastRow + 1, 1, rangeToCopy.length, 6).setValues(rangeToCopy);
+}
