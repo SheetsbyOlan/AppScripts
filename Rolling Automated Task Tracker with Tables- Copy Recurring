@@ -1,0 +1,15 @@
+function copyMondayTasks() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var recurringSheet = spreadsheet.getSheetByName("Recurring");
+  var taskListSheet = spreadsheet.getSheetByName("Task List");
+  var lastRow = recurringSheet.getLastRow();
+  
+  for (var i = 2; i <= lastRow; i++) { 
+    var dayValue = recurringSheet.getRange(i, 1).getValue(); 
+    if (dayValue === "Monday") {
+      var taskData = recurringSheet.getRange(i, 2, 1, 6).getValues();
+      var nextRow = taskListSheet.getLastRow() + 1;
+      taskListSheet.getRange(nextRow, 2, 1, 6).setValues(taskData);
+    }
+  }
+}
