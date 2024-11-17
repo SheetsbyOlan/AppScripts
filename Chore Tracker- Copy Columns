@@ -1,0 +1,27 @@
+function copyColumns() {
+  // Get the spreadsheet and sheets
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var worksheet = ss.getSheetByName("Worksheet");
+  var toDoList = ss.getSheetByName("To Do List");
+
+  // Get the data from the "Worksheet" tab
+  var data = worksheet.getDataRange().getValues();
+
+  // Filter the data where column G (index 6) is "Yes"
+  var filteredData = data.filter(function(row) {
+    return row[7] === "Yes";
+  });
+
+  // Extract columns A:D (index 0 to 3) from the filtered data and add timestamp to column E
+  var columnsToCopy = filteredData.map(function(row) {
+    var newRow = row.slice(1, 5); 
+    newRow.push(new Date()); // Add timestamp to column E (index 4)
+    return newRow;
+  });
+
+  // Get the last row of the "To Do List" tab
+  var lastRow = toDoList.getLastRow();
+
+  // Append the extracted columns to the "To Do List" tab
+  toDoList.getRange(lastRow + 1, 1, columnsToCopy.length, columnsToCopy[0].length).setValues(columnsToCopy);
+}
