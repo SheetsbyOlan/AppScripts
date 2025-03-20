@@ -1,0 +1,17 @@
+function TTcopyAndTimestamp() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName("TikTok");
+
+  if (!sheet) {
+    Logger.log("Sheet 'TikTok' not found.");
+    return;
+  }
+
+  var sourceRange = sheet.getRange("B5:L5");
+  var sourceValues = sourceRange.getValues();
+
+  var lastRow = sheet.getLastRow();
+
+  var targetRange = sheet.getRange(lastRow + 1, 1, 1, 12);
+  targetRange.setValues([[new Date(), ...sourceValues[0]]]);
+}
