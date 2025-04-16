@@ -1,0 +1,76 @@
+function onEdit(e) {
+  addatimestamp(e);
+  movedone(e)
+}
+
+function addatimestamp(e) {
+  var sheet = e.source.getActiveSheet();
+  
+  if (sheet.getName() !== "Task List") {
+    return;
+  }
+  
+  var range = e.range;
+  var column = range.getColumn();
+  Logger.log('edited');
+  
+  if (column == 3) {
+    var timestamp = new Date();
+    var row = range.getRow();
+    var value = e.value;
+    Logger.log("edited cell: " + range.getA1Notation());
+    
+    if (value == "Done") {
+      sheet.getRange(row, 12).setValue(timestamp);
+    }
+    if (value == "Pending") {
+      sheet.getRange(row, 11).setValue(timestamp);
+    }
+  }
+  
+  if (column == 2) {
+    var timestamp = new Date();
+    var row = range.getRow();
+    var value = e.value;
+    Logger.log("edited cell: " + range.getA1Notation());
+    
+    if (value !== "") {
+      sheet.getRange(row, 10).setValue(timestamp);
+    }
+  }
+}
+
+
+
+function movedone(e) {
+  var sheet = e.source.getActiveSheet();
+  var range = e.range;
+  var row = range.getRow();
+  var col = range.getColumn();
+  
+  if (range.getColumn() == 3 && e.value == "Done") {
+      var targetSheet = e.source.getSheetByName("Done"); 
+      var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1); 
+    
+      sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+    
+      sheet.deleteRow(range.getRow());
+      }
+
+    if (range.getColumn() == 3 && e.value == "Parked"){
+      var targetSheet = e.source.getSheetByName("Parked Tasks"); 
+      var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1); 
+    
+      sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+    
+      sheet.deleteRow(range.getRow());
+      }
+    if (range.getColumn() == 3 && e.value == "Ready"){
+      var targetSheet = e.source.getSheetByName("Task List"); 
+      var targetRange = targetSheet.getRange(targetSheet.getLastRow() + 1, 1); 
+    
+      sheet.getRange(range.getRow(), 1, 1, sheet.getLastColumn()).copyTo(targetRange);
+    
+      sheet.deleteRow(range.getRow());
+      }
+}
