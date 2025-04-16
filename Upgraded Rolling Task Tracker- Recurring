@@ -1,0 +1,19 @@
+function copyRecurringTasks() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var recurringSheet = spreadsheet.getSheetByName("Recurring");
+  var taskListSheet = spreadsheet.getSheetByName("Task List");
+  var lastRow = recurringSheet.getLastRow();
+  
+  for (var i = 2; i <= lastRow; i++) { 
+    var dayValue = recurringSheet.getRange(i, 11).getValue(); 
+    if (dayValue === "Yes") {
+      var taskData = recurringSheet.getRange(i, 2, 1, 7).getValues();
+      var nextRow = taskListSheet.getLastRow() + 1;
+      taskListSheet.getRange(nextRow, 1, 1, 7).setValues(taskData);
+      
+      var now = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+      taskListSheet.getRange(nextRow, 10).setValue(now); 
+      recurringSheet.getRange(i, 9).setValue(now); 
+    }
+  }
+}
