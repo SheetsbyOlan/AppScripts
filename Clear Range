@@ -1,0 +1,4 @@
+function clearRange() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  sheet.getRange("D2:D").clearContent();
+}
