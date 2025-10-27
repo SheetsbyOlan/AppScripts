@@ -1,0 +1,12 @@
+function copyDataWithoutBlanks() {
+  var sourceSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
+  var destinationSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Rolling Performance Results");
+
+  var lastRow = sourceSheet.getLastRow();
+
+  var values = sourceSheet.getRange("A2:G" + lastRow).getValues().filter(row => row.join("").trim() !== "");
+
+  var nextRow = destinationSheet.getLastRow() + 1;
+
+  destinationSheet.getRange(nextRow, 1, values.length, values[0].length).setValues(values);
+}
