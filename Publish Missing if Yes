@@ -1,0 +1,35 @@
+/**
+ * Copies rows from the "To Add" sheet to the "Full Data" sheet
+ * if Column A in "To Add" contains "Yes".
+ */
+function copyDataOnCondition() {
+  // 1. Set up the connection to your sheets
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sourceSheet = ss.getSheetByName("To Add");
+  const targetSheet = ss.getSheetByName("Full Data");
+
+  // Exit if either sheet doesn't exist
+  if (!sourceSheet || !targetSheet) {
+    SpreadsheetApp.getUi().alert("Please ensure both 'To Add' and 'Full Data' sheets exist.");
+    return;
+  }
+  
+  // 2. Read all data from the source sheet at once to minimize API calls
+  // We start from row 2 to skip the header row.
+  const sourceRange = sourceSheet.getRange("A2:K" + sourceSheet.getLastRow());
+  const sourceData = sourceRange.getValues();
+  
+  // 3. Filter the data to get only the rows we need
+  const rowsToCopy = sourceData
+    .filter(row => row[0] === "Yes") // Find rows where Column A (index 0) is "Yes"
+    .map(row => row.slice(1, 11));    // For those rows, get only Columns B through K (indexes 1-11)
+
+  // 4. Check if there is any data to paste
+  if (rowsToCopy.length > 0) {
+    // Find the next empty row in the target sheet
+    const nextRow = targetSheet.getLastRow() + 1;
+    
+    // Paste all the collected data in a single operation for maximum efficiency
+    targetSheet.getRange(nextRow, 1, rowsToCopy.length, rowsToCopy[0].length).setValues(rowsToCopy);
+  }
+}
