@@ -1,0 +1,31 @@
+function onEdit(e) {
+  // Get the spreadsheet and sheets
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var toDoList = ss.getSheetByName("To Do List");
+  var completed = ss.getSheetByName("Completed");
+
+  // Get the edited row and column
+  var row = e.range.getRow();
+  var col = e.range.getColumn();
+
+  // Check if the edit was on the "To Do List" tab and in column F (index 6)
+  if (e.range.getSheet().getName() === "To Do List" && col === 7) {
+    // Check if the edited cell is marked as "TRUE"
+    if (e.range.getValue() === true) {
+      // Get the values from columns A:D of the edited row
+      var valuesToCopy = toDoList.getRange(row, 1, 1, 5).getValues()[0];
+
+      // Get the next empty row on the "Completed" tab
+      var nextRow = completed.getLastRow() + 1;
+
+      // Copy the values to the "Completed" tab
+      completed.getRange(nextRow, 1, 1, 5).setValues([valuesToCopy]);
+
+      // Add timestamp to column E
+      completed.getRange(nextRow, 5).setValue(new Date());
+
+      // Delete the row from the "To Do List" tab
+      toDoList.deleteRow(row);
+    }
+  }
+}
