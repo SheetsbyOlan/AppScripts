@@ -1,0 +1,15 @@
+function copyNewHireTasks() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var recurringSheet = spreadsheet.getSheetByName("Recurring");
+  var taskListSheet = spreadsheet.getSheetByName("Task List");
+  var lastRow = recurringSheet.getLastRow();
+  
+  for (var i = 1; i <= lastRow; i++) { 
+    var dayValue = recurringSheet.getRange(i, 1).getValue(); 
+    if (dayValue === "New Hire") {
+      var taskData = recurringSheet.getRange(i, 2, 1, 7).getValues();
+      var nextRow = taskListSheet.getLastRow() + 1;
+      taskListSheet.getRange(nextRow, 1, 1, 7).setValues(taskData);
+    }
+  }
+}
