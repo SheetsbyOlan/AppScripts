@@ -1,0 +1,6 @@
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('Automations')// Change 'Automations' to the name you want for the menu bar
+      .addItem('New Hire', 'copyNewHireTasks')// 'New Hire' is the name in the menu bar dropdown. 'copyNewHireTasks' is the name of the function below.
+      .addToUi();
+}
